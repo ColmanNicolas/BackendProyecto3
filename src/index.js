@@ -4,7 +4,6 @@ require("dotenv").config();
 
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
-const productRouter = require('./routes/...');
 const authRouter = require('./routes/authRoute');
 
 const app = express();
