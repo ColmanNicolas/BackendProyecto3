@@ -5,6 +5,7 @@ require("dotenv").config();
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/...');
+const authRouter = require('./routes/authRoute');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use('/api', menuRouter);
 app.use('/api', userRouter );
+app.use('/api', authRouter );
 
 app.listen(PORT, () => {
     console.log(`API Rest escuchando el puerto ${PORT}`);
