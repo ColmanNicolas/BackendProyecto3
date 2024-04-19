@@ -60,20 +60,25 @@ const putPrincipalUser = async (req, res) => {
 }
 const deletePrincipalUser = async (req, res) => {
     const { id } = req.params;
-    const { ...rest } = req.body;
-
-    rest.status = !rest.status;
-
     try {
-        const user = await PrincipalUser.findByIdAndUpdate(id, rest, { new: true });
+    const user = await PrincipalUser.findById(id);
+    if (!user) {
+        return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+   /*  if(user.paid || user.status == true ){
+        user.status = !user.status;
+    }
+    */
+    user.status = !user.status;
 
-        if (!user) {
-            return res.status(404).json({ msg: "Usuario no encontrado" });
-        }
+
+        await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
+        console.log("llego aqui");
+
 
         res.status(200).json({ msg: "El status del usuario se modificó ", user });
     } catch (error) {
-        res.status(400).json({ msg: "Ocurrió un error al intentar dar de baja al usuario" });
+        res.status(400).json({ msg: "Ocurrió un error ",error });
     }
 }
 const borrarUsuario = async(req,res)=>{
