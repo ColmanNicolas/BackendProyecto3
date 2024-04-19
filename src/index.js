@@ -8,6 +8,7 @@ const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const principalUserRouter = require('./routes/principalUserRoutes');
+const principalAuthRouter = require('./routes/principalAuthRoutes');
 
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/api', menuRouter);
 app.use('/api', userRouter );
 app.use('/api', orderRouter );
 app.use('/api', principalUserRouter );
+app.use('/api', principalAuthRouter );
 
 app.listen(PORT, () => {
     console.log(`API Rest escuchando el puerto ${PORT}`);

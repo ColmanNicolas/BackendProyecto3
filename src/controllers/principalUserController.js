@@ -10,7 +10,7 @@ const getPrincipalUser = async (req, res) => {
             message: 'El id del usuario no es válido'
         })
     }
-    const user = await User.findById(id)
+    const user = await PrincipalUser.findById(id)
     if (!user) {
         return res.status(404).json({
             message: 'Usuario no encontrado'
