@@ -51,7 +51,7 @@ const principalUserModelSchema = new mongoose.Schema({
 });
 
 principalUserModelSchema.methods.toJSON = function () {
-    const { __v, _id, password, ...principalUser } = this.toObject();
+    const { __v, _id, ...principalUser } = this.toObject();
     const parsePrincipalUser = {
         id: _id,
         ...principalUser,

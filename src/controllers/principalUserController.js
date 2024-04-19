@@ -58,25 +58,37 @@ const putPrincipalUser = async (req, res) => {
 
     }
 }
-const deletePrincipalUser = async (req, res) => {
+const enablePrincipalUser = async (req, res) => {
+    const { id } = req.params;
+    console.log("habilito user");
+
+    try {
+    const user = await PrincipalUser.findById(id);
+    if (!user) {
+        return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+    console.log("habilito user");
+    user.status = true;
+
+        await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
+        res.status(200).json({ msg: "El status del usuario se habilitó ", user });
+    } catch (error) {
+        res.status(400).json({ msg: "Ocurrió un error ",error });
+    }
+}
+const disablePrincipalUser = async (req, res) => {
     const { id } = req.params;
     try {
     const user = await PrincipalUser.findById(id);
     if (!user) {
         return res.status(404).json({ msg: "Usuario no encontrado" });
     }
-   /*  if(user.paid || user.status == true ){
-        user.status = !user.status;
-    }
-    */
-    user.status = !user.status;
 
+    user.status = false;
 
         await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
         console.log("llego aqui");
-
-
-        res.status(200).json({ msg: "El status del usuario se modificó ", user });
+        res.status(200).json({ msg: "El status del usuario se deshabilita ", user });
     } catch (error) {
         res.status(400).json({ msg: "Ocurrió un error ",error });
     }
@@ -92,6 +104,7 @@ module.exports = {
     getPrincipalUserList,
     postPrincipalUser,
     putPrincipalUser,
-    deletePrincipalUser,
+    enablePrincipalUser,
+    disablePrincipalUser,
     borrarUsuario,
 }

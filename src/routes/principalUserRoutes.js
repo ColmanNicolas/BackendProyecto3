@@ -7,7 +7,8 @@ const {
     getPrincipalUserList,
     postPrincipalUser,
     putPrincipalUser,
-    deletePrincipalUser,
+    enablePrincipalUser,
+    disablePrincipalUser,
     borrarUsuario } = require('../controllers/principalUserController');
 
 const { validatesFields } = require('../middlewares/validatesFields');
@@ -20,7 +21,8 @@ router.get('/principalUsers/:id', getPrincipalUser);
 router.get('/principalUsers', getPrincipalUserList);
 router.post('/principalUsers', postPrincipalUser);
 router.put('/principalUsers/:id', putPrincipalUser);
-router.delete('/principalUsers/:id', deletePrincipalUser);
+router.put('/principalUsers/enable/:id', enablePrincipalUser);
+router.put('/principalUsers/disable/:id', disablePrincipalUser);
 router.delete('/principalUsers/borrar/:id', borrarUsuario);
 
 module.exports = router;
