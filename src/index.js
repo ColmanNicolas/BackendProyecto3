@@ -7,7 +7,6 @@ require("dotenv").config();
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
-const authRouter = require('./routes/authRoute');
 const principalUserRouter = require('./routes/principalUserRoutes');
 
 const authRouter = require('./routes/authRoute');
@@ -15,6 +14,7 @@ const principalAuthRouter = require('./routes/principalAuthRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+app.use(cors());
 
 mongoose
     .connect(process.env.URI_MONGO)
