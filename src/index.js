@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require ("mongoose");
-const cors = require ("cors");
+const cors = require('cors');
 
 require("dotenv").config();
 
@@ -9,13 +9,12 @@ const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const authRouter = require('./routes/authRoute');
 const principalUserRouter = require('./routes/principalUserRoutes');
-const principalAuthRouter = require('./routes/principalAuthRoutes');
 
+const authRouter = require('./routes/authRoute');
+const principalAuthRouter = require('./routes/principalAuthRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-
-app.use(cors());
 
 mongoose
     .connect(process.env.URI_MONGO)
