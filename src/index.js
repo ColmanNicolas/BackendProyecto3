@@ -7,6 +7,7 @@ require("dotenv").config();
 const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
+const authRouter = require('./routes/authRoute');
 const principalUserRouter = require('./routes/principalUserRoutes');
 
 const authRouter = require('./routes/authRoute');
