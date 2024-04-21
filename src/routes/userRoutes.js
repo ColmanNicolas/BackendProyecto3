@@ -19,12 +19,13 @@ router.post(
     '/users',
     [
         check('name', "El name es obligatorio").not().isEmpty(), 
-            check('password', "El password tiene que tener 6 caracteres").isLength({ 
+            check('password', "El password debe tener al menos 6 caracteres y como máximo 25 caracteres").isLength({ 
             min: 6,
+            max: 25
         }),
         check('email', "El email es invalido").isEmail(),
         check("email").custom(emailExiste),
-        check('role', "No es un rol valido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
+        // check('role', "No es un rol valido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
         validatesFields
     ],
     userPost
