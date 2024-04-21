@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require ("mongoose");
-const cors = require ("cors");
+const cors = require('cors');
 
 require("dotenv").config();
 
@@ -8,13 +8,12 @@ const menuRouter = require("./routes/menuRoute");
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const principalUserRouter = require('./routes/principalUserRoutes');
-const principalAuthRouter = require('./routes/principalAuthRoutes');
 
+const authRouter = require('./routes/authRoute');
+const principalAuthRouter = require('./routes/principalAuthRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-
-app.use(cors());
 
 mongoose
     .connect(process.env.URI_MONGO)
@@ -27,6 +26,8 @@ app.use('/api', menuRouter);
 app.use('/api', userRouter );
 app.use('/api', orderRouter );
 app.use('/api', principalUserRouter );
+
+app.use('/api', authRouter );
 app.use('/api', principalAuthRouter );
 
 app.listen(PORT, () => {

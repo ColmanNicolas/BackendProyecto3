@@ -15,17 +15,26 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "El password es obligatorio"],
         },
-        role:{
+        role: {
             type: String,
-            required: [true, "El rol es obligatorio"],
-            enum: ["ADMIN_ROLE", "USER_ROLE"]
+            enum: ["ADMIN_ROLE", "USER_ROLE", "CASHIER_ROLE", "WAITER_ROLE", "AUXILIARY_ROLE", "MANAGER_ROLE", "HR_ROLE"],
+            default: "USER_ROLE"
         },
         status:{
             type: Boolean,
-            default: true
+            default: false
         }
     }
 )
+
+userSchema.methods.toJSON = function () {
+    const {__v, _id, password, ...user} = this.toObject();
+    const parseUser = {
+        id: _id,
+        ...user,
+    }
+    return parseUser;
+}
 
 const User = mongoose.model("User", userSchema);
 
