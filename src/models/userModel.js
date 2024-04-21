@@ -22,10 +22,19 @@ const userSchema = new mongoose.Schema(
         },
         status:{
             type: Boolean,
-            default: true
+            default: false
         }
     }
 )
+
+userSchema.methods.toJSON = function () {
+    const {__v, _id, password, ...user} = this.toObject();
+    const parseUser = {
+        id: _id,
+        ...user,
+    }
+    return parseUser;
+}
 
 const User = mongoose.model("User", userSchema);
 
