@@ -1,5 +1,5 @@
 const bcryptjs = require('bcryptjs')
-const mongoose = require ("mongoose");
+const mongoose = require("mongoose");
 
 const User = require('../models/userModel')
 
@@ -18,12 +18,12 @@ const userGet = async (req, res) => {
         total,
         users
       });
-      } else {
-          return res.status(204).json({
-           message: 'No hay usuarios',
-          data: []
-        });
-      }
+    } else {
+      return res.status(204).json({
+        message: 'No hay usuarios',
+        data: []
+      });
+    }
   } catch (error) {
     console.error('Error al obtener usuarios:', error.message);
     return res.status(500).json({
@@ -73,35 +73,59 @@ const userPost = async (req, res) => {
 
 const userPut = async (req, res) => {
   try {
-      const userAuth = req.userAuth;
-      console.log(userAuth)
-      const { id } = req.params;
-      const { password, email, ...rest } = req.body;
-      if (password) {
-        const salt = bcryptjs.genSaltSync();
-        rest.password = bcryptjs.hashSync(password, salt);
-      }
-      const user = await User.findByIdAndUpdate(id, rest, { new: true });
-      return res.json(user);
+    const userAuth = req.userAuth;
+    console.log(userAuth)
+    const { id } = req.params;
+    const { password, email, ...rest } = req.body;
+    if (password) {
+      const salt = bcryptjs.genSaltSync();
+      rest.password = bcryptjs.hashSync(password, salt);
+    }
+    const user = await User.findByIdAndUpdate(id, rest, { new: true });
+    return res.json(user);
   } catch (error) {
     console.error('Error al actualizar usuario:', error.message);
     return res.status(500).json({ error: 'Hubo un error al actualizar el usuario' });
   }
 };
 
+const enableUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({
+        message: 'El id de usuario no es válido'
+      });
+    }
+    const user = await User.findByIdAndUpdate(id, { status: true }, { new: true });
 
+    if (!user) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado'
+      });
+    }
+    return res.status(200).json({
+      message: `El usuario con el nombre '${user.name}' fue habilitado exitosamente`
+    });
+  } catch (error) {
+    console.error('Error al habilitar usuario:', error.message);
+    return res.status(500).json({ message: 'Hubo un error al habilitar el usuario' });
+  }
+}
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     if (!mongoose.isValidObjectId(id)) {
       return res.status(400).json({
-          message: 'El id de usuario no es válido'
+        message: 'El id de usuario no es válido'
       });
     }
     const user = await User.findByIdAndUpdate(id, { status: false }, { new: true });
     if (!user) {
       return res.status(404).json({
-          message: 'Usuario no encontrado'
+        message: 'Usuario no encontrado'
       });
     }
     return res.status(200).json({
@@ -114,4 +138,4 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { userGet, userPost, userPut, getUser, deleteUser }
+module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser }

@@ -11,7 +11,7 @@ const principalUserModelSchema = new mongoose.Schema({
         required: [true, "BusinessName is required"],
         unique:true,
     },
-    email: {
+    principalEmail: {
         type: String,
         required: [true, "Email is required"],
         unique: true,

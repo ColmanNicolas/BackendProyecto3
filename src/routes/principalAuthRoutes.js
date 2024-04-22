@@ -4,7 +4,8 @@ const { check } = require('express-validator')
 
 const {
     principalLogin,
-    principalRegister
+    principalRegister,
+    generateServiceAdmin
     } = require('../controllers/principalAuthController');
 
 const { validatesFields } = require('../middlewares/validatesFields');
@@ -14,5 +15,6 @@ const router = Router();
 
 router.post("/principal-auth/login",principalLogin);
 router.post("/principal-auth/register",principalRegister);
+router.post("/users/admin",generateServiceAdmin);
 
 module.exports = router;

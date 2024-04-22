@@ -31,8 +31,8 @@ const getPrincipalUserList = async (req, res) => {
 }
 const postPrincipalUser = async (req, res) => {
     try {
-        const { name, businessName, email, password, country, city } = req.body;
-        const user = new PrincipalUser({ name, businessName, email, password, country, city });
+        const { name, businessName, principalEmail, password, country, city } = req.body;
+        const user = new PrincipalUser({ name, businessName, principalEmail, password, country, city });
         user.role = "SERVICE_USER_ROLE";
         const salt = bcryptjs.genSaltSync();
         user.password = bcryptjs.hashSync(password, salt);
@@ -45,7 +45,7 @@ const postPrincipalUser = async (req, res) => {
 const putPrincipalUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { _id, password, email, ...rest } = req.body;
+        const { _id, password, principalEmail, ...rest } = req.body;
         console.log(rest);
         if (password) {
             const salt = bcryptjs.genSaltSync();
@@ -60,7 +60,6 @@ const putPrincipalUser = async (req, res) => {
 }
 const enablePrincipalUser = async (req, res) => {
     const { id } = req.params;
-    console.log("habilito user");
 
     try {
     const user = await PrincipalUser.findById(id);

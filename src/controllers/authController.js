@@ -7,11 +7,11 @@ const { generateJWT } = require('../helpers/generateToken');
 const login = async (req = request, res = response) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-
+    console.log(user);
     if (!user) {
         return res
         .status(400)
-        .json( {msg: 'User / password incorrecto (email)'} );
+        .json( {messageError: 'User / password incorrecto (email)'} );
     }
     
     if (!user.status) {
@@ -20,13 +20,12 @@ const login = async (req = request, res = response) => {
         .json( {msg: 'Su cuenta esta pendiente de activacion',user});
     }
     
-
     const validPassword = bcryptjs.compareSync(password, user.password);
 
     if (!validPassword) {
         return res
         .status(400)
-        .json( {msg: 'User / password incorrecto (password)'} )
+        .json( {messageError: 'User / password incorrecto (password)',user} )
     }
 
     const token = await generateJWT(user.id)
