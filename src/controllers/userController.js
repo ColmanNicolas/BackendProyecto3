@@ -31,6 +31,15 @@ const userGet = async (req, res) => {
     });
   }
 };
+const getFilterUser = async (req, res) => {
+  const { status } = req.params;
+  try {
+    const filteredUsers = await User.find({ status: status === ':true' });
+    res.status(200).json(filteredUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 
 const getUser = async (req, res) => {
   try {
@@ -138,4 +147,4 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser }
+module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser, getFilterUser }
