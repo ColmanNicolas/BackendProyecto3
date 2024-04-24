@@ -9,6 +9,7 @@ const {
     putPrincipalUser,
     enablePrincipalUser,
     disablePrincipalUser,
+    userPayDone,
     borrarUsuario } = require('../controllers/principalUserController');
 
 const { validatesFields } = require('../middlewares/validatesFields');
@@ -23,6 +24,7 @@ router.post('/principalUsers', postPrincipalUser);
 router.put('/principalUsers/:id', putPrincipalUser);
 router.put('/principalUsers/enable/:id', enablePrincipalUser);
 router.put('/principalUsers/disable/:id', disablePrincipalUser);
+router.put('/principalUsers/pay-done/:id', userPayDone);
 router.delete('/principalUsers/borrar/:id', borrarUsuario);
 
 module.exports = router;
