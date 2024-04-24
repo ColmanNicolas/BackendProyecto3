@@ -92,6 +92,24 @@ const disablePrincipalUser = async (req, res) => {
         res.status(400).json({ msg: "Ocurrió un error ",error });
     }
 }
+const userPayDone = async (req, res) => {
+    console.log("llego 1");
+
+    const { id } = req.params;
+    console.log("llego 2",id);
+    try {
+    const user = await PrincipalUser.findById(id);
+    if (!user) {
+        return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+    user.paid = true;
+
+        await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
+        res.status(200).json({ msg: "El pago del usuario se actualizó ", user });
+    } catch (error) {
+        res.status(400).json({ msg: "Ocurrió un error ",error });
+    }
+}
 const borrarUsuario = async(req,res)=>{
     const { id } = req.params;
     await PrincipalUser.findByIdAndDelete(id);
@@ -105,5 +123,6 @@ module.exports = {
     putPrincipalUser,
     enablePrincipalUser,
     disablePrincipalUser,
+    userPayDone,
     borrarUsuario,
 }

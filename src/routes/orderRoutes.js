@@ -28,18 +28,17 @@ router.get('/order/:id', async (req, res) => {
 
 // Crear una nueva orden
 router.post('/order', async (req, res) => {
-    const { orderId, userId, items, totalPrice, status } = req.body;
+    try {
+    const { userId, items, totalPrice, status,createdAt } = req.body;
     const order = new Order({
-        orderId,
         userId,
         items,
         totalPrice,
-        status
+        status,
+        createdAt
     });
-
-    try {
         const newOrder = await order.save();
-        res.status(201).json(newOrder);
+        res.status(201).json({msg:"orden realizada",newOrder});
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
