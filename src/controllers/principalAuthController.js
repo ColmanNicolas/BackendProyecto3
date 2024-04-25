@@ -45,8 +45,8 @@ const principalRegister = async (req, res) => {
 }
 const generateServiceAdmin = async (req, res) => {
     try {
-        const { name, principalEmail, password, role } = req.body;
-
+        const { name, principalEmail, password, role , serviceType } = req.body;
+        console.log(req.body);
         const userPrincipalExiste = await PrincipalUser.findOne({ principalEmail })
         const userExiste = await User.findOne({ email: principalEmail })
 
@@ -68,7 +68,7 @@ const generateServiceAdmin = async (req, res) => {
             }
         }
         else if (!userExiste) {
-            const user = await User.create({ name, email: principalEmail, password, role: "ADMIN_ROLE", status: true });
+            const user = await User.create({ name, email: principalEmail, password, role: "ADMIN_ROLE", status: true, serviceType });
             return res.status(201).json({ message: 'Usuario admin exitosamente', user });
         }
         else {

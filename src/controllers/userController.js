@@ -5,7 +5,7 @@ const User = require('../models/userModel')
 
 const userGet = async (req, res) => {
   try {
-    const { limit = 10, from = 0 } = req.query;
+    const { limit = 100, from = 0 } = req.query;
     const [users, total] = await Promise.all([
       User.find({})
         .skip(Number(from))
@@ -35,7 +35,25 @@ const getFilterUser = async (req, res) => {
   const { status } = req.params;
   try {
     const filteredUsers = await User.find({ status: status === ':true' });
+    if (!filteredUsers) {
+      return res.status(400).json({ msg: "no se encontro coincidencia" });
+    }
     res.status(200).json(filteredUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const getRoleFilterUser = async (req, res) => {
+  const { role } = req.params;
+
+  try {
+    const todosusers = await User.find();
+    const filteredUsers = await User.find({ role: role });
+    if (!filteredUsers) {
+      return res.status(400).json({ msg: "no se encontro coincidencia" });
+    }
+    res.status(200).json({filteredUsers});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -69,10 +87,19 @@ const getUser = async (req, res) => {
 
 const userPost = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    //Falta conectar con el token del admin del servicio para el primer if
+    const { idServicio , name, email, password, role } = req.body;
     const salt = bcryptjs.genSaltSync();
     const hashedPassword = bcryptjs.hashSync(password, salt);
-    const user = await User.create({ name, email, password: hashedPassword, role });
+    let user;
+    if(!idServicio){
+      user = await User.create({ name, email, password: hashedPassword, role });
+    }else if(idServicio){
+       user = await User.create({ name, email, password: hashedPassword, role , idServicio: idServicio.value });
+    }
+    if(!user){
+      return res.status(400).json({ message: 'Error al crear el usuario' });
+    }
     return res.status(201).json({ message: 'Usuario agregado exitosamente', user });
   } catch (error) {
     console.error('Error al agregar usuario:', error.message);
@@ -147,4 +174,4 @@ const deleteUser = async (req, res) => {
 };
 
 
-module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser, getFilterUser }
+module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser, getFilterUser, getRoleFilterUser }

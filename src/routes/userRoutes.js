@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator')
 
 
-const { userGet, userPost, userPut, getUser, enableUser, deleteUser,getFilterUser } = require('../controllers/userController');
+const { userGet, userPost, userPut, getUser, enableUser, deleteUser,getFilterUser ,getRoleFilterUser} = require('../controllers/userController');
 const { validatesFields } = require('../middlewares/validatesFields');
 const { emailExiste } = require('../helpers/db-validator');
 const { validateJWT } = require('../middlewares/validatesTokens');
@@ -16,6 +16,7 @@ router.get('/users', userGet);
 router.get('/users/:id', getUser);
 
 router.get('/users/filter/:status', getFilterUser);
+router.get('/users/role_filter/:role', getRoleFilterUser);
 
 router.post(
     '/users',

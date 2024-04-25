@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema(
         status:{
             type: Boolean,
             default: false
+        }     ,   
+        idServicio:{
+            type: String,
+        },
+        serviceType:{
+            type: String,
+            enum: ["SELF_MANAGEMENT", "STANDARD_SERVICE", "MENU_APP","USER_ROLE"],
+            default: "USER_ROLE"
         }
     }
 )

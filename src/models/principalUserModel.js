@@ -48,6 +48,11 @@ const principalUserModelSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    serviceType:{
+        type: String,
+        enum: ["SELF_MANAGEMENT", "STANDARD_SERVICE", "MENU_APP","USER_ROLE"],
+        default: "USER_ROLE"
+    }
 });
 
 principalUserModelSchema.methods.toJSON = function () {
