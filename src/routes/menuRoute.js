@@ -13,4 +13,6 @@ router.put("/menu/:id", menuController.putUpdateMenu);
 
 router.delete("/menu/:id", menuController.deleteMenu);
 
+router.get('/menu/filter/:filtro', menuController.filtrarMenus);
+
 module.exports = router;
