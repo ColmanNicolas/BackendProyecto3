@@ -6,12 +6,15 @@ const Order = require('../models/orderModel');
 router.get('/order', async (req, res) => {
     try {
         const orders = await Order.find();
-        res.json(orders);
+        if(!orders){
+           return res.status(404).json({ message: 'Ordenes no encontrada' });
+        }
+        const reversedOrders = orders.reverse();
+        res.json(reversedOrders);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
-
 // Obtener una orden específica por su ID
 router.get('/order/:id', async (req, res) => {
     try {
