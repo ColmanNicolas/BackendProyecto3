@@ -1,7 +1,6 @@
-const bcryptjs = require('bcryptjs')
+const bcryptjs = require('bcryptjs');
 const mongoose = require("mongoose");
-
-const User = require('../models/userModel')
+const User = require('../models/userModel');
 
 const userGet = async (req, res) => {
   try {
@@ -31,6 +30,7 @@ const userGet = async (req, res) => {
     });
   }
 };
+
 const getFilterUser = async (req, res) => {
   const { status } = req.params;
   try {
@@ -46,9 +46,7 @@ const getFilterUser = async (req, res) => {
 
 const getRoleFilterUser = async (req, res) => {
   const { role } = req.params;
-
   try {
-    const todosusers = await User.find();
     const filteredUsers = await User.find({ role: role });
     if (!filteredUsers) {
       return res.status(400).json({ msg: "no se encontro coincidencia" });
@@ -87,14 +85,13 @@ const getUser = async (req, res) => {
 
 const userPost = async (req, res) => {
   try {
-    //Falta conectar con el token del admin del servicio para el primer if
     const { idServicio , name, email, password, role } = req.body;
     const salt = bcryptjs.genSaltSync();
     const hashedPassword = bcryptjs.hashSync(password, salt);
     let user;
     if(!idServicio){
       user = await User.create({ name, email, password: hashedPassword, role });
-    }else if(idServicio){
+    } else if(idServicio){
        user = await User.create({ name, email, password: hashedPassword, role , idServicio: idServicio.value });
     }
     if(!user){
@@ -109,8 +106,6 @@ const userPost = async (req, res) => {
 
 const userPut = async (req, res) => {
   try {
-    const userAuth = req.userAuth;
-    console.log(userAuth)
     const { id } = req.params;
     const { password, email, ...rest } = req.body;
     if (password) {
@@ -128,14 +123,12 @@ const userPut = async (req, res) => {
 const enableUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     if (!mongoose.isValidObjectId(id)) {
       return res.status(400).json({
         message: 'El id de usuario no es válido'
       });
     }
     const user = await User.findByIdAndUpdate(id, { status: true }, { new: true });
-
     if (!user) {
       return res.status(404).json({
         message: 'Usuario no encontrado'
@@ -149,10 +142,10 @@ const enableUser = async (req, res) => {
     return res.status(500).json({ message: 'Hubo un error al habilitar el usuario' });
   }
 }
+
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     if (!mongoose.isValidObjectId(id)) {
       return res.status(400).json({
         message: 'El id de usuario no es válido'
@@ -173,5 +166,34 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.params;
+    const users = await User.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } }, // Búsqueda por nombre, ignorando mayúsculas y minúsculas
+        { email: { $regex: query, $options: 'i' } } // Búsqueda por correo electrónico, ignorando mayúsculas y minúsculas
+      ]
+    });
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron usuarios que coincidan con la búsqueda.' });
+    }
+    return res.status(200).json({ message: 'Usuarios encontrados:', users });
+  } catch (error) {
+    console.error('Error al buscar usuarios:', error.message);
+    return res.status(500).json({ error: 'Hubo un error al buscar usuarios.' });
+  }
+};
 
-module.exports = { userGet, userPost, userPut, getUser, deleteUser, enableUser, getFilterUser, getRoleFilterUser }
+
+module.exports = { 
+  userGet, 
+  userPost, 
+  userPut, 
+  getUser, 
+  deleteUser, 
+  enableUser, 
+  getFilterUser, 
+  getRoleFilterUser,
+  searchUsers
+};
