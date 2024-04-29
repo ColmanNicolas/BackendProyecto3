@@ -171,8 +171,9 @@ const searchUsers = async (req, res) => {
     const { query } = req.params;
     const users = await User.find({
       $or: [
-        { name: { $regex: query, $options: 'i' } }, // Búsqueda por nombre, ignorando mayúsculas y minúsculas
-        { email: { $regex: query, $options: 'i' } } // Búsqueda por correo electrónico, ignorando mayúsculas y minúsculas
+        { name: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } },
+        { role: { $regex: query, $options: 'i' } } 
       ]
     });
     if (users.length === 0) {
