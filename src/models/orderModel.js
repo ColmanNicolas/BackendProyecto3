@@ -2,9 +2,15 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema(
     {
+        orderNumber: {
+            type: Number,
+            required: true,
+            unique: true,
+            default: 1
+        },
         userId: {
-            type: String,
-            required: true
+            type: [Object],
+            required: true,
         },
         items: {
             type: [Object],
@@ -16,7 +22,7 @@ const orderSchema = new mongoose.Schema(
         },
         paid: {
             type: Boolean,
-            default:false,
+            default: false,
         },
         status: {
             type: String,

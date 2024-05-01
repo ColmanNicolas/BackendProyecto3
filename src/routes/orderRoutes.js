@@ -32,21 +32,27 @@ router.get('/order/:id', async (req, res) => {
 // Crear una nueva orden
 router.post('/order', async (req, res) => {
     try {
-        const { userId, items, totalPrice, status, createdAt } = req.body;
+        const { rest, items, totalPrice, status, createdAt } = req.body;
+        
+        const orderCount = await Order.find();
+        const orderNumber = orderCount.length + 1;
+        console.log("me llega el objeto",rest);
         const order = new Order({
-            userId,
+            orderNumber,
+            userId: rest,
             items,
             totalPrice,
             status,
             createdAt
         });
+
         const newOrder = await order.save();
-        res.status(201).json({ msg: "orden realizada", newOrder });
+        console.log(newOrder);
+        res.status(201).json({ msg: "Orden realizada", newOrder });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 });
-
 // Actualizar una orden existente
 router.put('/order/:id', async (req, res) => {
     try {
@@ -86,6 +92,8 @@ router.get('/order/filter/:filtro', async (req, res) => { // Cambiado ":id" a ":
         if (!order) { // Verificar si se encontraron órdenes
           return  res.status(404).json({ message: 'Orden no encontrada' });
         } 
+         order = order.reverse();
+
         res.status(200).json({ msg: "lista de pedidos filtrada", order });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -108,6 +116,18 @@ router.delete('/:orderId', async (req, res) => {
     }
 });
 */
+router.post('/orders/update-orders', async (req, res) => {
+    try {
+        const { newUserId } = req.body; // El nuevo userId que quieres asignar a todas las órdenes
+
+        // Actualiza todos los documentos en la colección de órdenes con el nuevo userId
+        const result = await Order.updateMany({}, { $set: { userId: newUserId } });
+
+        res.status(200).json({ msg: "Órdenes actualizadas exitosamente", result });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
 
 
 
