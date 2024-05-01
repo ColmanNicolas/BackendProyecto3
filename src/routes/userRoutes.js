@@ -1,13 +1,12 @@
 const { Router } = require('express');
-const { check } = require('express-validator')
+const { check } = require('express-validator');
 
 
-const { userGet, userPost, userPut, getUser, enableUser, deleteUser,getFilterUser ,getRoleFilterUser} = require('../controllers/userController');
+const { userGet, userPost, userPut, getUser, enableUser, deleteUser, getFilterUser ,getRoleFilterUser, searchUsers } = require('../controllers/userController');
 const { validatesFields } = require('../middlewares/validatesFields');
 const { emailExiste } = require('../helpers/db-validator');
 const { validateJWT } = require('../middlewares/validatesTokens');
 const { isAdminRole } = require('../middlewares/validateRole');
-
 
 const router = Router();
 
@@ -49,6 +48,8 @@ router.put(
 router.put('/users/enable/:id', enableUser)
 
 router.delete('/users/:id', deleteUser)
+
+router.get('/users/search/:query', searchUsers);
 
 
 
