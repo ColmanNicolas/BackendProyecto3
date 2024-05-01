@@ -9,24 +9,21 @@ const User = require('../models/userModel');
 const principalLogin = async (req, res) => {
     try {
         const { principalEmail, password } = req.body;
-        console.log(principalEmail, password );
+        console.log(principalEmail, password);
         const user = await PrincipalUser.findOne({ principalEmail })
         if (!user) {
-            return res.status(400), json({ msg: " email o password incorrectos" })
-        }
-        if (user.status) {
-            return res.status(400), json({ msg: " email o password incorrectos" })
+            return res.status(400).json({ messageError: 'User / password incorrecto (no existe)' })
         }
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword) {
-            return res.status(400), json({ msg: " password incorrectos" })
+            return res.status(400).json({ messageError: 'User / password incorrecto (pass)' })
         }
 
         const token = await generarJWT(user.id);
         res.status(200).json({ msg: "login ok", user, token })
 
     } catch (error) {
-        res.status(400).json({ msg: "login fallido",error })
+        res.status(400).json({ messageError: "login fallido, error inesperado del servidor", error })
 
     }
 }
@@ -46,7 +43,7 @@ const principalRegister = async (req, res) => {
 }
 const generateServiceAdmin = async (req, res) => {
     try {
-        const { name, principalEmail, password, role , serviceType } = req.body;
+        const { name, principalEmail, password, role, serviceType } = req.body;
         console.log(req.body);
         const userPrincipalExiste = await PrincipalUser.findOne({ principalEmail })
         const userExiste = await User.findOne({ email: principalEmail })
@@ -74,9 +71,9 @@ const generateServiceAdmin = async (req, res) => {
         }
         else {
             console.log("NO PUDE HACER NADA");
+        }
     }
-    }
-     catch (error) {
+    catch (error) {
         console.error('Error al agregar usuario:', error.message);
         return res.status(500).json({ error: 'Hubo un error al agregar el usuario' });
     }

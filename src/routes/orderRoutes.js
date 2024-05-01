@@ -58,8 +58,12 @@ router.put('/order/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { status , paid } = req.body;
+        console.log("entro aqui  0  00  ", req.body);
+
+        let paidAlternado = !paid;
+
         console.log("entro aqui", req.body);
-        const updatedOrder = await Order.findByIdAndUpdate(id, { status ,paid}, { new: true });
+        const updatedOrder = await Order.findByIdAndUpdate(id, { status ,paid: paidAlternado}, { new: true });
         if (updatedOrder) {
             res.status(200).json({ message: 'Estado de pedido actualizada', updatedOrder });
         } else {
