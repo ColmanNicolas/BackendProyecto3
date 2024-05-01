@@ -135,7 +135,7 @@ const enableUser = async (req, res) => {
       });
     }
     return res.status(200).json({
-      message: `El usuario con el nombre '${user.name}' fue habilitado exitosamente`
+      message: `El usuario con el nombre '${user.name}' fue habilitado exitosamente`,user
     });
   } catch (error) {
     console.error('Error al habilitar usuario:', error.message);
@@ -158,7 +158,7 @@ const deleteUser = async (req, res) => {
       });
     }
     return res.status(200).json({
-      message: `El usuario con el nombre '${user.name}' fue desactivado exitosamente`
+      message: `El usuario con el nombre '${user.name}' fue desactivado exitosamente`,user
     });
   } catch (error) {
     console.error('Error al desactivar usuario:', error.message);
@@ -167,8 +167,10 @@ const deleteUser = async (req, res) => {
 };
 
 const searchUsers = async (req, res) => {
+  console.log("llego al buscador");
   try {
     const { query } = req.params;
+    console.log(query);
     const users = await User.find({
       $or: [
         { name: { $regex: query, $options: 'i' } },

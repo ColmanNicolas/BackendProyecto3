@@ -9,6 +9,7 @@ const User = require('../models/userModel');
 const principalLogin = async (req, res) => {
     try {
         const { principalEmail, password } = req.body;
+        console.log(principalEmail, password );
         const user = await PrincipalUser.findOne({ principalEmail })
         if (!user) {
             return res.status(400), json({ msg: " email o password incorrectos" })

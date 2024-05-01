@@ -77,6 +77,27 @@ const filtrarMenus = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+const searchMenus = async (req, res) => {
+    console.log("llego al buscador");
+    try {
+        const { query } = req.params;
+        console.log(query);
+        const menus = await Menu.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } },
+                { detail: { $regex: query, $options: 'i' } },
+            ]
+        });
+        if (menus.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron menus que coincidan con la búsqueda.' });
+        }
+        return res.status(200).json({ message: 'menus encontrados:', menus });
+    } catch (error) {
+        console.error('Error al buscar menus:', error.message);
+        return res.status(500).json({ error: 'Hubo un error al buscar menus.' });
+    }
+};
+
 
 module.exports = {
     getAllMenu,
@@ -84,5 +105,6 @@ module.exports = {
     getOneMenu,
     putUpdateMenu,
     deleteMenu,
-    filtrarMenus
+    filtrarMenus,
+    searchMenus
 };

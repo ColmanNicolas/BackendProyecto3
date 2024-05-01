@@ -9,6 +9,8 @@ router.post("/menu", menuController.createNewMenu);
 
 router.get("/menu/:id", menuController.getOneMenu);
 
+router.get('/menu/search/:query', menuController.searchMenus);
+
 router.put("/menu/:id", menuController.putUpdateMenu);
 
 router.delete("/menu/:id", menuController.deleteMenu);
