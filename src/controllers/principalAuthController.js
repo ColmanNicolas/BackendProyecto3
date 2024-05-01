@@ -25,7 +25,7 @@ const principalLogin = async (req, res) => {
         res.status(200).json({ msg: "login ok", user, token })
 
     } catch (error) {
-        res.status(400).json({ msg: "login fallido" })
+        res.status(400).json({ msg: "login fallido",error })
 
     }
 }

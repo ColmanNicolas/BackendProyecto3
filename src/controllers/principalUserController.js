@@ -97,7 +97,7 @@ const userPayDone = async (req, res) => {
     const { id } = req.params;
     try {
 
-        const user = await PrincipalUser.findByIdAndUpdate(id, { paid: true ,serviceType:typeService }, { new: true });
+        const user = await PrincipalUser.findByIdAndUpdate(id, { paid: true, serviceType: typeService }, { new: true });
         if (!user) {
             return res.status(404).json({ msg: "Usuario no encontrado" });
         }
@@ -111,10 +111,38 @@ const borrarUsuario = async (req, res) => {
     await PrincipalUser.findByIdAndDelete(id);
     res.status(200).json({ msg: "todo ok ya" });
 }
+const getFilterStatusUser = async (req, res) => {
+    const { status } = req.params;
+    try {
+        const filteredUsers = await PrincipalUser.find({ status: status === 'true' });
+        if (!filteredUsers) {
+            return res.status(400).json({ msg: "no se encontro coincidencia" });
+        }
+        res.status(200).json({ msg: "Usuarios filtrados por habilitacion", filteredUsers });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+const getFilterPaidUser = async (req, res) => {
+    const { paid } = req.params;
+    console.log(paid);
+
+    try {
+        const filteredUsers = await PrincipalUser.find({ paid: paid === 'true' });
+        if (!filteredUsers) {
+            return res.status(400).json({ msg: "no se encontro coincidencia" });
+        }
+        res.status(200).json({ msg: "Usuarios filtrados por Pago", filteredUsers });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 module.exports = {
     getPrincipalUser,
     getPrincipalUserList,
+    getFilterStatusUser,
+    getFilterPaidUser,
     postPrincipalUser,
     putPrincipalUser,
     enablePrincipalUser,

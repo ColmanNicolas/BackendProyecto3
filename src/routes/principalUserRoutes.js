@@ -5,6 +5,8 @@ const { check } = require('express-validator')
 const {
     getPrincipalUser,
     getPrincipalUserList,
+    getFilterStatusUser,
+    getFilterPaidUser,
     postPrincipalUser,
     putPrincipalUser,
     enablePrincipalUser,
@@ -20,6 +22,8 @@ const router = Router();
 
 router.get('/principalUsers/:id', getPrincipalUser);
 router.get('/principalUsers', getPrincipalUserList);
+router.get('/principalUsers/status/:status', getFilterStatusUser);
+router.get('/principalUsers/paid/:paid', getFilterPaidUser);
 router.post('/principalUsers', postPrincipalUser);
 router.put('/principalUsers/:id', putPrincipalUser);
 router.put('/principalUsers/enable/:id', enablePrincipalUser);
