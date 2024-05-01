@@ -6,8 +6,8 @@ const Order = require('../models/orderModel');
 router.get('/order', async (req, res) => {
     try {
         const orders = await Order.find();
-        if(!orders){
-           return res.status(404).json({ message: 'Ordenes no encontrada' });
+        if (!orders) {
+            return res.status(404).json({ message: 'Ordenes no encontrada' });
         }
         const reversedOrders = orders.reverse();
         res.json(reversedOrders);
@@ -33,10 +33,10 @@ router.get('/order/:id', async (req, res) => {
 router.post('/order', async (req, res) => {
     try {
         const { rest, items, totalPrice, status, createdAt } = req.body;
-        
+
         const orderCount = await Order.find();
         const orderNumber = orderCount.length + 1;
-        console.log("me llega el objeto",rest);
+        console.log("me llega el objeto", rest);
         const order = new Order({
             orderNumber,
             userId: rest,
@@ -57,13 +57,13 @@ router.post('/order', async (req, res) => {
 router.put('/order/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { status , paid } = req.body;
+        const { status, paid } = req.body;
         console.log("entro aqui  0  00  ", req.body);
 
         let paidAlternado = !paid;
 
         console.log("entro aqui", req.body);
-        const updatedOrder = await Order.findByIdAndUpdate(id, { status ,paid: paidAlternado}, { new: true });
+        const updatedOrder = await Order.findByIdAndUpdate(id, { status, paid: paidAlternado }, { new: true });
         if (updatedOrder) {
             res.status(200).json({ message: 'Estado de pedido actualizada', updatedOrder });
         } else {
@@ -94,9 +94,9 @@ router.get('/order/filter/:filtro', async (req, res) => { // Cambiado ":id" a ":
         }
 
         if (!order) { // Verificar si se encontraron órdenes
-          return  res.status(404).json({ message: 'Orden no encontrada' });
-        } 
-         order = order.reverse();
+            return res.status(404).json({ message: 'Orden no encontrada' });
+        }
+        order = order.reverse();
 
         res.status(200).json({ msg: "lista de pedidos filtrada", order });
     } catch (error) {
@@ -104,22 +104,6 @@ router.get('/order/filter/:filtro', async (req, res) => { // Cambiado ":id" a ":
     }
 });
 
-// Eliminar una orden existente
-/*en teoria no vamos a eliminar ordenes, en todo caso se deberia pasar a status CANCELADA
-router.delete('/:orderId', async (req, res) => {
-    try {
-        const order = await Order.findById(req.params.orderId);
-        if (order) {
-            await order.remove();
-            res.json({ message: 'Orden eliminada' });
-        } else {
-            res.status(404).json({ message: 'Orden no encontrada' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-*/
 router.post('/orders/update-orders', async (req, res) => {
     try {
         const { newUserId } = req.body; // El nuevo userId que quieres asignar a todas las órdenes
@@ -130,6 +114,33 @@ router.post('/orders/update-orders', async (req, res) => {
         res.status(200).json({ msg: "Órdenes actualizadas exitosamente", result });
     } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+});
+
+router.get('/orders/search/:query', async (req, res) => {
+    console.log("si llego aquí!");
+    try {
+        let query = req.params.query;
+
+        let orders;
+        if (!isNaN(parseInt(query))) {
+            console.log("si llego aquí numero!");
+            query=parseInt(query);
+            orders = await Order.find({ orderNumber: query });
+        } else {
+            console.log("si llego aquí texto!");
+
+            orders = await Order.find({ 'userId.name': { $regex: query, $options: 'i' } });
+        }
+
+        console.log("busqué bien");
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.',orders:{} });
+        }
+        return res.status(200).json({ message: 'Pedidos encontrados:', orders });
+    } catch (error) {
+        console.error('Error al buscar pedidos:', error.message);
+        return res.status(500).json({ error: 'Hubo un error al buscar pedidos.' });
     }
 });
 
