@@ -89,7 +89,7 @@ const searchMenus = async (req, res) => {
             ]
         });
         if (menus.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron menus que coincidan con la búsqueda.' });
+            return res.status(400).json({ message: 'No se encontraron menus que coincidan con la búsqueda.',menus:{} });
         }
         return res.status(200).json({ message: 'menus encontrados:', menus });
     } catch (error) {

@@ -135,7 +135,7 @@ router.get('/orders/search/:query', async (req, res) => {
 
         console.log("busqué bien");
         if (orders.length === 0) {
-            return res.status(404).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.',orders:{} });
+            return res.status(400).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.',orders:{} });
         }
         return res.status(200).json({ message: 'Pedidos encontrados:', orders });
     } catch (error) {
