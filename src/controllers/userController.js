@@ -167,10 +167,8 @@ const deleteUser = async (req, res) => {
 };
 
 const searchUsers = async (req, res) => {
-  console.log("llego al buscador");
   try {
     const { query } = req.params;
-    console.log(query);
     const users = await User.find({
       $or: [
         { name: { $regex: query, $options: 'i' } },

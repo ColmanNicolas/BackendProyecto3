@@ -7,7 +7,6 @@ const { generateJWT } = require('../helpers/generateToken');
 const login = async (req = request, res = response) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log(user);
     if (!user) {
         return res
         .status(400)
@@ -29,7 +28,6 @@ const login = async (req = request, res = response) => {
     }
 
     const token = await generateJWT(user.id);
-    console.log(token); // Añadir este console.log para verificar el token generado
 
     res.json( {msg: 'Login ok', user, token } );
 }

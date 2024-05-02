@@ -36,7 +36,6 @@ router.post('/order', async (req, res) => {
 
         const orderCount = await Order.find();
         const orderNumber = orderCount.length + 1;
-        console.log("me llega el objeto", rest);
         const order = new Order({
             orderNumber,
             userId: rest,
@@ -47,7 +46,6 @@ router.post('/order', async (req, res) => {
         });
 
         const newOrder = await order.save();
-        console.log(newOrder);
         res.status(201).json({ msg: "Orden realizada", newOrder });
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -58,11 +56,9 @@ router.put('/order/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { status, paid } = req.body;
-        console.log("entro aqui  0  00  ", req.body);
 
         let paidAlternado = !paid;
 
-        console.log("entro aqui", req.body);
         const updatedOrder = await Order.findByIdAndUpdate(id, { status, paid: paidAlternado }, { new: true });
         if (updatedOrder) {
             res.status(200).json({ message: 'Estado de pedido actualizada', updatedOrder });
@@ -82,7 +78,6 @@ router.get('/order/filter/:filtro', async (req, res) => { // Cambiado ":id" a ":
 
         switch (filtro) {
             case "PAGADO":
-                console.log("entro correctametne en pagado");
                 order = await Order.find({ paid: true }); // Usar llaves {} para especificar el objeto de consulta
                 break;
             case "NO_PAGADO":
@@ -118,22 +113,18 @@ router.post('/orders/update-orders', async (req, res) => {
 });
 
 router.get('/orders/search/:query', async (req, res) => {
-    console.log("si llego aquí!");
     try {
         let query = req.params.query;
 
         let orders;
         if (!isNaN(parseInt(query))) {
-            console.log("si llego aquí numero!");
             query = parseInt(query);
             orders = await Order.find({ orderNumber: query });
         } else {
-            console.log("si llego aquí texto!");
 
             orders = await Order.find({ 'userId.name': { $regex: query, $options: 'i' } });
         }
 
-        console.log("busqué bien");
         if (orders.length === 0) {
             return res.status(400).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.', orders: {} });
         }

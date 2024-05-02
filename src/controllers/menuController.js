@@ -12,10 +12,8 @@ const getAllMenu = async (request, response) => {
 
 const createNewMenu = async (request, response) => {
     try {
-        console.log("recibo menu: ", request.body);
         const { name, state, price, detail, category, image } = request.body;
         const menu = await Menu.create({ name, state, price, detail, category, image });
-        console.log(menu);
         response.status(201).json(menu);
     } catch (error) {
         response.status(500).json({ error: error.message });
@@ -27,7 +25,6 @@ const getOneMenu = async (request, response) => {
 
     try {
         const id = request.params.id;
-        console.log(id);
         const menu = await Menu.findById(id);
         if (!menu) {
             return response.status(404).json({ message: "Menu no encontrado" });
@@ -67,7 +64,6 @@ const deleteMenu = async (request, response) => {
 const filtrarMenus = async (req, res) => {
     try {
         const { filtro } = req.params;
-        console.log("recibo filtro:", filtro);
         const menu = await Menu.find({ category: filtro });
         if (!menu) {
             return res.status(400).json({ message: "no se encontraron ordenes para este filtro" });
@@ -78,10 +74,8 @@ const filtrarMenus = async (req, res) => {
     }
 }
 const searchMenus = async (req, res) => {
-    console.log("llego al buscador");
     try {
         const { query } = req.params;
-        console.log(query);
         const menus = await Menu.find({
             $or: [
                 { name: { $regex: query, $options: 'i' } },

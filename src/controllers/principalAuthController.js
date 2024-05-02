@@ -9,7 +9,6 @@ const User = require('../models/userModel');
 const principalLogin = async (req, res) => {
     try {
         const { principalEmail, password } = req.body;
-        console.log(principalEmail, password);
         const user = await PrincipalUser.findOne({ principalEmail })
         if (!user) {
             return res.status(400).json({ messageError: 'User / password incorrecto (no existe)' })
@@ -44,11 +43,9 @@ const principalRegister = async (req, res) => {
 const generateServiceAdmin = async (req, res) => {
     try {
         const { name, principalEmail, password, role, serviceType } = req.body;
-        console.log(req.body);
         const userPrincipalExiste = await PrincipalUser.findOne({ principalEmail })
         const userExiste = await User.findOne({ email: principalEmail })
 
-        console.log(userExiste, "y tambien ", userPrincipalExiste);
         //si ya esta registrado el email, controlo si es un ADMIN_ROLE
         if (userExiste && userPrincipalExiste) {
             try {

@@ -46,7 +46,6 @@ const putPrincipalUser = async (req, res) => {
     try {
         const { id } = req.params;
         const { _id, password, principalEmail, ...rest } = req.body;
-        console.log(rest);
         if (password) {
             const salt = bcryptjs.genSaltSync();
             rest.password = bcryptjs.hashSync(password, salt);
@@ -66,7 +65,6 @@ const enablePrincipalUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: "Usuario no encontrado" });
         }
-        console.log("habilito user");
         user.status = true;
 
         await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
@@ -86,7 +84,6 @@ const disablePrincipalUser = async (req, res) => {
         user.status = false;
 
         await PrincipalUser.findByIdAndUpdate(id, user, { new: true });
-        console.log("llego aqui");
         res.status(200).json({ msg: "El status del usuario se deshabilita ", user });
     } catch (error) {
         res.status(400).json({ msg: "Ocurrió un error ", error });
@@ -125,7 +122,6 @@ const getFilterStatusUser = async (req, res) => {
 }
 const getFilterPaidUser = async (req, res) => {
     const { paid } = req.params;
-    console.log(paid);
 
     try {
         const filteredUsers = await PrincipalUser.find({ paid: paid === 'true' });
