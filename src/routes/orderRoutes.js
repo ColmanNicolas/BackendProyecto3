@@ -125,7 +125,7 @@ router.get('/orders/search/:query', async (req, res) => {
         let orders;
         if (!isNaN(parseInt(query))) {
             console.log("si llego aquí numero!");
-            query=parseInt(query);
+            query = parseInt(query);
             orders = await Order.find({ orderNumber: query });
         } else {
             console.log("si llego aquí texto!");
@@ -135,7 +135,7 @@ router.get('/orders/search/:query', async (req, res) => {
 
         console.log("busqué bien");
         if (orders.length === 0) {
-            return res.status(400).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.',orders:{} });
+            return res.status(400).json({ message: 'No se encontraron pedidos que coincidan con la búsqueda.', orders: {} });
         }
         return res.status(200).json({ message: 'Pedidos encontrados:', orders });
     } catch (error) {
@@ -143,6 +143,24 @@ router.get('/orders/search/:query', async (req, res) => {
         return res.status(500).json({ error: 'Hubo un error al buscar pedidos.' });
     }
 });
+
+router.get('/order/userOrderFilter/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const orders = await Order.find({ 'userId.id': id });
+
+        // Invertir el orden de los resultados
+        const ordersReversed = orders.reverse();
+
+        if (!ordersReversed || ordersReversed.length === 0) {
+            return res.status(400).json({ msg: "No se encontraron coincidencias" });
+        }
+        res.status(200).json({ orders: ordersReversed });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 
 
