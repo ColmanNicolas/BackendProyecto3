@@ -39,7 +39,7 @@ const postPrincipalUser = async (req, res) => {
         await user.save();
         res.status(201).json({ msg: "Usuario creado", user });
     } catch (error) {
-        res.status(400).json({ msg: "ocurrio un error al crear el usuarioooo", error });
+        res.status(400).json({ msg: "ocurrio un error al crear el usuario", error });
     }
 }
 const putPrincipalUser = async (req, res) => {
