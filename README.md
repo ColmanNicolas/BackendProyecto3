@@ -521,6 +521,11 @@ Detalles Breves de los Directorios
 
 - **`/index.js`**: Punto de entrada principal del servidor backend. Aquí se configura y se inicia el servidor HTTP utilizando Express u otro framework, se conecta a la base de datos y se establecen configuraciones globales del servidor.
 
+## Colaboradores
+- **`Colman, Mario Nicolas`**
+- **`Saleh, Diego`**
+- **`Cinello Paez, Gastón`**
+- **`Osores, Leonardo`**
   
 ## Licencia
 
