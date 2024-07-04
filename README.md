@@ -520,7 +520,8 @@ Detalles Breves de los Directorios
 - **`/services`**: Capa de servicios que encapsula la lógica de negocio y la interacción con la base de datos. Aquí se definen funciones para realizar operaciones complejas que involucran múltiples modelos o validaciones.
 
 - **`/index.js`**: Punto de entrada principal del servidor backend. Aquí se configura y se inicia el servidor HTTP utilizando Express u otro framework, se conecta a la base de datos y se establecen configuraciones globales del servidor.
-- 
+
+  
 ## Licencia
 
 Este proyecto está bajo la licencia [©BarAppServices]. Para más detalles, consulta el archivo LICENSE.
