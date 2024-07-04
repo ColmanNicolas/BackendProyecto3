@@ -505,7 +505,7 @@ npm run dev
    |-- /index.js       # Punto de entrada principal del servidor
 ```
 
-### detalles
+### Detalles
 Detalles Breves de los Directorios
 - **`/controllers`**: Contiene los archivos que manejan la lógica de negocio para cada ruta de la API. Aquí se implementan las funciones que procesan las peticiones HTTP y retornan respuestas.
 
@@ -520,4 +520,7 @@ Detalles Breves de los Directorios
 - **`/services`**: Capa de servicios que encapsula la lógica de negocio y la interacción con la base de datos. Aquí se definen funciones para realizar operaciones complejas que involucran múltiples modelos o validaciones.
 
 - **`/index.js`**: Punto de entrada principal del servidor backend. Aquí se configura y se inicia el servidor HTTP utilizando Express u otro framework, se conecta a la base de datos y se establecen configuraciones globales del servidor.
+- 
+## Licencia
 
+Este proyecto está bajo la licencia [©BarAppServices]. Para más detalles, consulta el archivo LICENSE.
