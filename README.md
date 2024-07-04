@@ -1,4 +1,4 @@
-#Backend Bar App Services
+# Backend Bar App Services
 
 ## Descripción
 Este proyecto es un backend para la gestion de un software que proporcione servicios para establecimientos gatronómicos. Proporciona varias API REST para crear, leer, actualizar y eliminar las siguientes colecciones: Usuarios, platos de menu y pedidos.
@@ -487,5 +487,8 @@ npm run dev
   - `500 Internal Server Error`: Problemas internos del servidor.
 
 ---
+
 ## Estructura del proyecto
+
+
 
