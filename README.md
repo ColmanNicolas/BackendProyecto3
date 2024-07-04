@@ -490,5 +490,34 @@ npm run dev
 
 ## Estructura del proyecto
 
+### Organización de Directorios y Archivos Principales
+```bash
+|-- README.md          # Documentación principal del proyecto
+|-- package.json       # Archivo de configuración de npm con las dependencias y scripts
+|-- .env               # Archivo para variables de entorno
+|-- /src               # Directorio raíz del código fuente
+   |-- /controllers    # Controladores para manejar la lógica de negocio
+   |-- /models         # Definiciones de modelos de datos utilizando Mongoose u otra librería ORM
+   |-- /routes         # Definición de rutas y controladores para endpoints de API
+   |-- /middlewares    # Funciones de middleware para manejar peticiones HTTP
+   |-- /helpers        # Funciones auxiliares y utilidades reutilizables en todo el proyecto
+   |-- /services       # Capa de servicios para interactuar con la lógica de negocio y la base de datos
+   |-- /index.js       # Punto de entrada principal del servidor
+```
 
+### detalles
+Detalles Breves de los Directorios
+- **`/controllers`**: Contiene los archivos que manejan la lógica de negocio para cada ruta de la API. Aquí se implementan las funciones que procesan las peticiones HTTP y retornan respuestas.
+
+- **`/models`**: Este directorio almacena las definiciones de los modelos de datos que representan las estructuras de las colecciones de la base de datos (por ejemplo, utilizando Mongoose para MongoDB).
+
+- **`/routes`**: Aquí se definen las rutas de la API junto con los controladores correspondientes que manejan las solicitudes HTTP para cada ruta. Cada archivo generalmente representa un conjunto de rutas relacionadas.
+
+- **`/middlewares`**: Contiene funciones de middleware que se ejecutan antes o después de manejar una solicitud HTTP. Pueden ser utilizadas para autenticación, validación de datos, manejo de errores, entre otros.
+
+- **`/helpers`**: Funciones auxiliares y utilidades reutilizables en diferentes partes del proyecto, como funciones de ayuda para formatear datos, generar tokens, manejar fechas, etc.
+
+- **`/services`**: Capa de servicios que encapsula la lógica de negocio y la interacción con la base de datos. Aquí se definen funciones para realizar operaciones complejas que involucran múltiples modelos o validaciones.
+
+- **`/index.js`**: Punto de entrada principal del servidor backend. Aquí se configura y se inicia el servidor HTTP utilizando Express u otro framework, se conecta a la base de datos y se establecen configuraciones globales del servidor.
 
